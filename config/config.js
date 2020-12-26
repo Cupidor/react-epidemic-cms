@@ -102,18 +102,26 @@ export default {
             {
               name: '健康科普',
               icon: 'FileDone',
+              path: '/main/HealthProtection',
+              component: './main/HealthProtection',
             },
             {
               name: '科研进度',
               icon: 'Experiment',
+              path: '/main/ResearchProgress',
+              component: './main/ResearchProgress',
             },
             {
               name: '战疫故事',
               icon: 'CarryOut',
+              path: '/main/PlagueStory',
+              component: './main/PlagueStory',
             },
             {
               name: '科学辟谣',
               icon: 'Audit',
+              path: '/main/RefutesRumors',
+              component: './main/RefutesRumors',
             },
             {
               component: './404',
