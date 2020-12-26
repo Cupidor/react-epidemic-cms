@@ -1,0 +1,59 @@
+@import '~antd/es/style/themes/default.less';
+
+.main {
+  width: 368px;
+  margin: 0 auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
+  .icon {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .other {
+    margin-top: 24px;
+    line-height: 22px;
+    text-align: left;
+
+    .register {
+      float: right;
+    }
+  }
+
+  :global {
+    .antd-pro-login-submit {
+      width: 100%;
+      margin-top: 24px;
+    }
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #8C8CD9;
+      border-color: #8C8CD9;
+    }
+  }
+
+  .remember {
+    color: #fff;
+  }
+
+  .activation {
+    :global {
+      .ant-typography-copy {
+        color: #ffffff;
+      }
+    }
+  }
+  .submit{
+    margin-top: 24px;
+    color: #6666cc;
+    background-color: #f0f0fa;
+  }
+}
