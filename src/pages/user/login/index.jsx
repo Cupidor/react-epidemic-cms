@@ -39,13 +39,12 @@ class Login extends Component {
   };
 
   // 登录
-  login = (userName, passWord) => {
+  login = async (userName, passWord) => {
     this.setState({
       submitting: false,
     });
-    message.success('登录成功!');
-    this.props.history.push({ pathname: '/main' });
-    /*const res = await Request(api.userUrl + 'user_login', {
+
+    const res = await Request(api.host + '/login', {
       method: 'post',
       requestType: 'form',
       data: {
@@ -53,10 +52,12 @@ class Login extends Component {
         password: passWord.trim(),
       },
     });
-    if (!res.op) {
-      res.message && message.error(res.message);
+    if (res.op === "success") {
+      message.success('登录成功!');
+      this.props.history.push({ pathname: '/main' });
     } else {
-    }*/
+      res.message && message.error(res.message);
+    }
   };
 
   onTabChange = type => {

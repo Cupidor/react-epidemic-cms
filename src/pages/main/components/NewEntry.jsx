@@ -16,19 +16,21 @@ class NewEntry extends Component {
       id: null,
       title: '',
       content: '',
+      Newstype: '',
     };
   }
 
   componentDidMount() {}
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isOpen !== this.props.isOpen) {
+    if (prevProps.isOpen !== this.props.isOpen || prevProps.Newstype !== this.props.Newstype) {
       if (this.props.isOpen) {
         this.setState(
           {
             id: null,
             title: '',
             content: '',
+            Newstype: this.props.Newstype,
           },
           () => {
             if (this.props.record === null) {
@@ -56,25 +58,83 @@ class NewEntry extends Component {
 
   // 确定
   handleOk = e => {
-    const { entryType, sectionId } = this.state;
+    const { entryType, title, content } = this.state;
     e.preventDefault();
-    this.setState({
-      confirmLoading: true,
-    });
+    if (title.trim() === '') {
+      message.warning('标题不能为空');
+      return;
+    }
+    if (content.trim() === '') {
+      message.warning('内容不能为空');
+      return;
+    }
+    if (entryType === '添加') {
+      this.submitAddRequest();
+    } else {
+      this.submitEditRequest();
+    }
   };
 
   // 录入新数据
-  submitAddRequest = async formdata => {
-    const res = await Request(api.tunnelDataUrl + 'manual_add_total_station_data', {
-      method: 'post',
-      data: formdata,
+  submitAddRequest = async () => {
+    const { title, content, Newstype } = this.state;
+    this.setState({
+      confirmLoading: true,
     });
-    if (!res.op) {
-      res.message && message.error(res.message);
-    } else {
+    const res = await Request(api.host + '/addNews', {
+      method: 'post',
+      requestType: 'form',
+      data: {
+        title,
+        content,
+        type: Newstype,
+      },
+    });
+    if (res.op === 'success') {
       message.success('录入新数据成功');
-      this.handleCancel();
-      this.props.refresh();
+      this.setState(
+        {
+          confirmLoading: false,
+        },
+        () => {
+          this.handleCancel();
+          this.props.refresh();
+        },
+      );
+    } else {
+      res.message && message.error(res.message);
+    }
+  };
+
+  // 修改
+  submitEditRequest = async () => {
+    const { id, title, content, Newstype } = this.state;
+    this.setState({
+      confirmLoading: true,
+    });
+    const res = await Request(api.host + '/editNews', {
+      method: 'post',
+      requestType: 'form',
+      data: {
+        id,
+        title,
+        content,
+        type: Newstype,
+      },
+    });
+    if (res.op === 'success') {
+      message.success('修改数据成功');
+      this.setState(
+        {
+          confirmLoading: false,
+        },
+        () => {
+          this.handleCancel();
+          this.props.refresh();
+        },
+      );
+    } else {
+      res.message && message.error(res.message);
     }
   };
 
